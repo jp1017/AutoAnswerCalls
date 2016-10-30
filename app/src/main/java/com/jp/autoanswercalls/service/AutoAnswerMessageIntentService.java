@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.BulkCursorDescriptor;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.text.TextUtils;
