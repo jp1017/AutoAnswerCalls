@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -127,18 +128,23 @@ public class AnswerMessageActivity extends Activity {
 
 
     private void addNotificaction() {
-        NotificationManager manager = (NotificationManager) getSystemService("notification");
-        Notification notification = new Notification();
-        notification.icon = R.mipmap.ic_launcher;
-        notification.tickerText = "Auto answer message service actived.";
-        notification.defaults = 1;
-        notification.audioStreamType = -1;
-        notification.setLatestEventInfo(this, "自动回复短信", "自动短信回复已打开", PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0));
-        manager.notify(1, notification);
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification.Builder builder = new Notification.Builder(this);
+
+        builder.setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("自动回复短信")
+                .setContentText("自动短信回复已打开")
+                .setTicker("自动短信回复已打开")
+                .setDefaults(Notification.DEFAULT_SOUND)
+                .setContentIntent(PendingIntent
+                        .getActivity(this, 0, new Intent(this, MainActivity.class), 0));
+
+        Notification notification = builder.getNotification();
+        manager.notify(0, notification);
     }
 
     private void removeNotificaction() {
-        ((NotificationManager) getSystemService("notification")).cancel(1);
+        ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancel(1);
     }
 
 }

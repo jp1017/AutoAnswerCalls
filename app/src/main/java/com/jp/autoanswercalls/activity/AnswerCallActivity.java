@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -103,18 +104,23 @@ public class AnswerCallActivity extends Activity {
 
 
     private void addNotificaction() {
-        NotificationManager manager = (NotificationManager) getSystemService("notification");
-        Notification notification = new Notification();
-        notification.icon = R.mipmap.ic_launcher;
-        notification.tickerText = "自动接听已打开";
-        notification.defaults = 1;
-        notification.audioStreamType = -1;
-        notification.setLatestEventInfo(this, "自动接听电话", "自动接听已打开", PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0));
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification.Builder builder = new Notification.Builder(this);
+
+        builder.setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("自动接听电话")
+                .setContentText("自动接听已打开")
+                .setTicker("自动接听已打开")
+                .setDefaults(Notification.DEFAULT_SOUND)
+                .setContentIntent(PendingIntent
+                        .getActivity(this, 0, new Intent(this, MainActivity.class), 0));
+
+        Notification notification = builder.getNotification();
         manager.notify(0, notification);
     }
 
     private void removeNotificaction() {
-        ((NotificationManager) getSystemService("notification")).cancel(0);
+        ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancel(0);
     }
 
 }
