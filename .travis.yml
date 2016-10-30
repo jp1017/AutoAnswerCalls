@@ -1,0 +1,29 @@
+language: android
+jdk: openjdk7
+sudo: false
+android:
+  components:
+  - tools
+  - platform-tools
+  - build-tools-23.0.2
+  - android-23
+  - extra-google-m2repository
+  - extra-android-m2repository
+git:
+  submodules: false
+before_install:
+- chmod +x gradlew
+script:
+- "./gradlew assembleDebug"
+before_deploy:
+- mv app/build/outputs/apk/app-debug.apk app/apk/AutoAnswerCalls.apk
+deploy:
+  provider: releases
+  api_key:
+    secure: PeR1088wtk6r70HR50YDJJYm+ns6ktPYFdWgcz5hm+q0DuCb3tr+BmeHLGaUECyodzf4aAirQEp9I8W4eEeWndOXvU+62rKH2QW6pnFJKw7dCNK5a+zY+9+5dswwieENWpUtjjCqRfKujzR93U29KsJWPHHC9wu0CqMRfTVvdohb+xwm6Gc6m9yvrk4Xj8tMjYmkZDzol758KIcitK2jwk7IkoVn8VFNbb9om4ra7o2K7P4qLBZvOxIHnYWw9PBY2/rqEMmY8WCcLquY28a+FxZ3A+L2tGrbEGGJYsvHmxFONXIN6RFupX+YiZARSm8ijrSV4DK3882bNkhaLcMOz/nY0Or7KnGdvFRJ1BDvE9J2BzrRY06AxM9oMc5BwwL7cSK5joPn6qHKnav3r79ERa/VZVwWVTqoL+9ObR6E0TGcpPjajzav0aHD1ijNGWAzHgvak9mU76cXLfUypj+HltJk5EQJx9Dgn885NONJtNRS7kmaJcEj1q5ax1wAEumPySEF4YatJaYbkLs4dFhyAZzW0snBMMkXAEZn1Ctd2fIKgxx2ZWvO/BzoIEXv9RikNJoBUNiylodQCmd90ieZv83YVEMwIzpH9IOm1OABKbrWHhT0mSIuHnUnKXcVEqBHqXpW8qnyBXdqPPBJtpBsObf+EaTt/Au7wqF/O1gPBCk=
+  file: app/apk/AutoAnswerCalls.apk
+  on:
+    repo: jp1017/AutoAnswerCalls
+after_deploy:
+- fir p app/build/outputs/apk/UVCCameraZxing.apk -T $FIR_TOKEN -c "`git cat-file tag
+  $TRAVIS_TAG`"
